@@ -19,7 +19,6 @@ from django.urls import path, include
 
 from rest_framework.authtoken.views import obtain_auth_token
 
-from LittleLemonAPI import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,11 +26,4 @@ urlpatterns = [
     path('api/', include('djoser.urls')),
     path('api/', include('djoser.urls.authtoken')),
     path('token/login/', obtain_auth_token, name='obtain-token'),
-
-    
-    path('groups/manager/users', views.groups_manager_users_view),
-    path('groups/manager/users/<str:username>', views.remove_from_manager_group_view),
-
-    path('groups/delivery-crew/users', views.groups_manager_delivery_crew_users_view),
-    path('groups/delivery-crew/users/<str:username>', views.remove_from_delivery_crew_group_view),
 ]
