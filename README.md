@@ -1,2 +1,1 @@
-# LittleLemon
-Coursera peer graded assignment
+pwd: LittleLemon@!786
