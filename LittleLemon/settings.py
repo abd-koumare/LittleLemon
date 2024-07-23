@@ -138,8 +138,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 
-    'DEFAULT_THROTTLE_RATES': {},
-
 }
 
 DJOSER = {

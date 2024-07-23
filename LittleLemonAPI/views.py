@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.db.models import Q, Sum
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator, EmptyPage
 
 from rest_framework.status import (
     HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,
@@ -32,7 +33,29 @@ from LittleLemon.settings import (
 def menu_items_view(request):
         
     if request.method == 'GET':
-        serializer = MenuItemSerializer(MenuItem.objects.select_related('category').all(), many=True)
+        menu_items = MenuItem.objects.select_related('category').all()
+
+        search = request.query_params.get('search')
+        ordering = request.query_params.get('ordering')
+        per_page = request.query_params.get('perpage', default=3)
+        page = request.query_params.get('page', default=1)
+
+
+        if search:
+            menu_items = menu_items.filter(title__contains=search)
+
+        if ordering:
+            ordering_fields = ordering.split(',')
+            menu_items = menu_items.order_by(*ordering_fields)
+
+        paginator = Paginator(menu_items, per_page=per_page)
+
+        try:
+            menu_items = paginator.page(number=page)
+        except EmptyPage:
+            menu_items = []
+
+        serializer = MenuItemSerializer(menu_items, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
     
 

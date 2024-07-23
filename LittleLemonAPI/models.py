@@ -57,4 +57,4 @@ class OrderItem(models.Model):
         unique_together = ('order', 'menuitem')
     
     def __str__(self):
-        return f'{self.menuitem} x {self.quantity} [{self.price}]'
+        return f'{self.menuitem} x {self.quantity} [{self.price}] for: {self.order.user.username}'
